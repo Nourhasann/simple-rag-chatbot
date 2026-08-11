@@ -18,12 +18,11 @@ Rather than relying purely on a language model's built-in knowledge, this chatbo
 ## How It Works
 
 1. **Load the dataset** — reads question/answer pairs from `Conversation.csv`, dropping incomplete rows
-2. **Tokenization** — inspects token counts for sample inputs using `tiktoken`
-3. **Embedding** — encodes every question in the dataset with a `sentence-transformers` model (`all-MiniLM-L6-v2`)
-4. **Retrieval** — embeds the user's message with the same model, computes cosine similarity against all stored question embeddings, and pulls the top-k most similar Q&A pairs as context
-5. **Generation** — passes the retrieved context plus conversation history to an LLM (served via the Hugging Face Inference API, `Qwen2.5-7B-Instruct`) to produce a natural response
-6. **Conversation memory** — tracks message history across turns (capped at the last 20 messages) so the bot maintains context within a session
-7. **Interfaces** — supports both a command-line chat loop and a Gradio `ChatInterface` web UI
+2. **Embedding** — encodes every question in the dataset with a `sentence-transformers` model (`all-MiniLM-L6-v2`)
+3. **Retrieval** — embeds the user's message with the same model, computes cosine similarity against all stored question embeddings, and pulls the top-k most similar Q&A pairs as context
+4. **Generation** — passes the retrieved context plus conversation history to an LLM (served via the Hugging Face Inference API, `Qwen2.5-7B-Instruct`) to produce a natural response
+5. **Conversation memory** — tracks message history across turns (capped at the last 20 messages) so the bot maintains context within a session
+6. **Interfaces** — supports both a command-line chat loop and a Gradio `ChatInterface` web UI
 
 ## Tech Stack
 
@@ -34,7 +33,7 @@ Rather than relying purely on a language model's built-in knowledge, this chatbo
 1. Clone this repository
 2. Install dependencies:
    ```bash
-   pip install numpy pandas tiktoken sentence-transformers huggingface_hub gradio
+   pip install numpy pandas sentence-transformers huggingface_hub gradio
    ```
 3. Set a Hugging Face API token as the environment variable / secret `HF_TOKEN` (required for response generation via the Inference API)
 4. Provide a `Conversation.csv` file with `question` and `answer` columns in the project directory
@@ -47,4 +46,4 @@ Open `Chatbot_Project.ipynb` (or run via the included Colab badge) and execute t
 
 - Embeddings use the free, local `sentence-transformers` model — no API cost or key required for retrieval.
 - Response generation depends on the Hugging Face Inference API and a valid `HF_TOKEN`; without one, the retrieval step still works, but reply generation will fail.
-- An OpenAI client is initialized early in the notebook but isn't used in the final pipeline — it's left in place in case API quota is restored for future experimentation with different chat/embedding models.
+
